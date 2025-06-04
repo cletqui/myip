@@ -1,5 +1,25 @@
 {
 	"name": "myip",
+  "version": "0.1.0",
+  "private": false,
+  "description": "IP Info",
+  "author": {
+    "name": "cletqui"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/cletqui/myip"
+  },
+  "keywords": [
+    "ip"
+  ],
+  "homepage": "https://myip.cybai.re/",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cletqui/myip/issues"
+  },
+  "type": "module",
+
 	"scripts": {
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy --minify",
