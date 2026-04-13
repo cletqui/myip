@@ -1,67 +1,43 @@
 import { Hono } from "hono";
-import { logger } from 'hono/logger'
-import { prettyJSON } from 'hono/pretty-json'
+import { logger } from "hono/logger";
+import { prettyJSON } from "hono/pretty-json";
 
-/* App */
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
-/* Middlewares */
-app.use(logger())
-app.use(prettyJSON())
-app.use(async (c, next) => {
-  const { headers, cf } = c.req.raw;
-  c.set("headers", headers);
-  c.set("cf", cf);
-  await next();
-});
+app.use(logger());
+app.use(prettyJSON());
+
+function cf(c: { req: { raw: Request } }): IncomingRequestCfProperties {
+  return (c.req.raw as Request<unknown, IncomingRequestCfProperties>).cf!;
+}
 
 /* Routes */
-app.get("/", (c) => {
-  return c.text(`${c.var.headers.get("cf-connecting-ip")}\n`);
-});
-
-app.get("/user-agent", (c) => {
-  return c.text(`${c.var.headers.get("user-agent")}\n`);
-});
-
-app.get("/continent", (c) => {
-  return c.text(`${c.var.cf.continent}\n`);
-});
-
-app.get("/country", (c) => {
-  return c.text(`${c.var.cf.country}\n`);
-});
-
-app.get("/region", (c) => {
-  return c.text(`${c.var.cf.region}\n`);
-});
-
-app.get("/city", (c) => {
-  return c.text(`${c.var.cf.city}\n`);
-});
-
-app.get("/postal-code", (c) => {
-  return c.text(`${c.var.cf.postalCode}\n`);
-});
-
-app.get("/asn", (c) => {
-  return c.text(`${c.var.cf.asn}\n`);
-});
-
-app.get("/org", (c) => {
-  return c.text(`${c.var.cf.asOrganization}\n`);
-});
+app.get("/", (c) => c.text(`${c.req.header("cf-connecting-ip")}\n`));
+app.get("/user-agent", (c) => c.text(`${c.req.header("user-agent")}\n`));
+app.get("/continent", (c) => c.text(`${cf(c).continent}\n`));
+app.get("/country", (c) => c.text(`${cf(c).country}\n`));
+app.get("/region", (c) => c.text(`${cf(c).region}\n`));
+app.get("/city", (c) => c.text(`${cf(c).city}\n`));
+app.get("/postal-code", (c) => c.text(`${cf(c).postalCode}\n`));
+app.get("/timezone", (c) => c.text(`${cf(c).timezone}\n`));
+app.get("/asn", (c) => c.text(`${cf(c).asn}\n`));
+app.get("/org", (c) => c.text(`${cf(c).asOrganization}\n`));
 
 app.get("/json", (c) => {
+  const info = cf(c);
   return c.json({
-    "ip": c.var.headers.get("cf-connecting-ip"),
-    "user-agent": c.var.headers.get("user-agent"),
-    "continent": c.var.cf.continent,
-    "country": c.var.cf.country,
-    "region": c.var.cf.region,
-    "city": c.var.cf.city,
-    "asn": c.var.cf.asn,
-    "org": c.var.cf.asOrganization,
+    ip: c.req.header("cf-connecting-ip"),
+    "user-agent": c.req.header("user-agent"),
+    continent: info.continent,
+    country: info.country,
+    region: info.region,
+    city: info.city,
+    "postal-code": info.postalCode,
+    timezone: info.timezone,
+    latitude: info.latitude,
+    longitude: info.longitude,
+    asn: info.asn,
+    org: info.asOrganization,
   });
 });
 
