@@ -1,34 +1,35 @@
 {
 	"name": "myip",
-  "version": "0.1.0",
-  "private": false,
-  "description": "IP Info",
-  "author": {
-    "name": "cletqui"
-  },
-  "repository": {
-    "type": "github",
-    "url": "https://github.com/cletqui/myip"
-  },
-  "keywords": [
-    "ip"
-  ],
-  "homepage": "https://myip.cybai.re/",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cletqui/myip/issues"
-  },
-  "type": "module",
-
+	"version": "0.2.0",
+	"private": false,
+	"description": "IP Info",
+	"author": {
+		"name": "cletqui"
+	},
+	"repository": {
+		"type": "github",
+		"url": "https://github.com/cletqui/myip"
+	},
+	"keywords": [
+		"ip"
+	],
+	"homepage": "https://myip.cybai.re/",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cletqui/myip/issues"
+	},
+	"type": "module",
 	"scripts": {
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy --minify",
-		"cf-typegen": "wrangler types --env-interface CloudflareBindings"
+		"cf-typegen": "wrangler types --env-interface CloudflareBindings",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"hono": "^4.9.9"
+		"hono": "^4.12.12"
 	},
 	"devDependencies": {
-		"wrangler": "^4.40.2"
+		"typescript": "^6.0.2",
+		"wrangler": "^4.82.1"
 	}
 }
