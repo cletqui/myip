@@ -6,10 +6,14 @@ A minimal Cloudflare Worker that returns information about the caller's IP.
 
 ## Usage
 
-All endpoints return plain text, except `/json`.
+All endpoints return plain text, except `/json`. Visiting `/` from a browser
+(`Accept: text/html`) returns a small HTML summary instead of bare text; every
+other client gets the plain IP. Unknown fields render as `unknown` (plain text)
+or `null` (JSON).
 
 ```
 GET /               → IP address
+GET /ip             → IP address (always plain text)
 GET /user-agent     → User-Agent string
 GET /continent      → 2-letter continent code (e.g. EU)
 GET /country        → ISO 3166-1 Alpha-2 country code (e.g. FR)
