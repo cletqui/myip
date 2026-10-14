@@ -26,10 +26,10 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"hono": "^4.13.5"
+		"hono": "^4.13.13"
 	},
 	"devDependencies": {
 		"typescript": "^7.0.2",
-		"wrangler": "^4.128.0"
+		"wrangler": "^4.151.0"
 	}
 }
